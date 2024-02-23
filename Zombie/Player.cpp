@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "TileMap.h"
 #include "SceneGame.h"
+#include "Bullet.h"
+#include "Zombie.h"
 
 Player::Player(const std::string& name)
 	:SpriteGo(name)
@@ -13,6 +15,9 @@ void Player::Init()
 	SpriteGo::Init();
 	SetTexture("graphics/player.png");
 	SetOrigin(Origins::MC);
+
+	isFiring = false;
+	fireTime = fireInterval;
 }
 
 void Player::Release()
@@ -23,6 +28,12 @@ void Player::Release()
 void Player::Reset()
 {
 	SpriteGo::Reset();
+
+	isFiring = false;
+	fireTimer = fireInterval;
+	hp = maxHp;
+	isAlive = true;
+	isNoDamage = false;
 
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	//tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Background")); //위의 것으로 변경
@@ -46,7 +57,6 @@ void Player::Update(float dt)
 	//SetRotation(); //호출
 	//플레이어부터 마우스 포인터를 바라보는 방향과 각도
 
-	
 	direction.x = InputMgr::GetAxis(Axis::Horizontal);
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
 
@@ -54,8 +64,6 @@ void Player::Update(float dt)
 	{
 		Utils::Normalize(direction);
 	}
-	/*SetPosition(position + direction * speed * dt);*/
-	//Translate(position + direction * speed * dt);        //위와 동일
 	
 	sf::Vector2f pos = position + direction * speed * dt;
 	//if (tileMap != nullptr)
@@ -79,9 +87,76 @@ void Player::Update(float dt)
 	}
 	SetPosition(pos);
 
+
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+	{
+		isFiring = true;
+
+	}
+	if (InputMgr::GetMouseButtonUp(sf::Mouse::Left))
+	{
+		isFiring = false;
+
+	}
+	fireTime += dt;
+	if (isFiring && fireTime > fireInterval)
+	{
+		Fire();
+		fireTime = 0.f;
+	}
+	if (isNoDamage)
+	{
+		noDamageTime += dt;
+		if (noDamageTimer > noDamageTime)
+		{
+			isNoDamage = false;
+		}
+	}
+}
+
+void Player::FixedUpdate(float dt)
+{
+	
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
+}
+
+void Player::Fire()
+{
+	Bullet* bullet = new Bullet();
+	bullet->Init();
+	bullet->Reset();
+	bullet->SetPosition(position);
+	bullet->Fire(look, bulletSpeed, bulletDamage);
+	sceneGame->AddGo(bullet);
+
+}
+
+void Player::OnDamage(int damage)
+{
+	if (!isAlive || !isNoDamage)
+		return;
+
+	hp -= damage;
+
+	isNoDamage = true;
+	noDamageTimer = 0.f;
+
+	if (hp <= 0)
+	{
+		hp = 0;
+		OnDie();
+	}
+}
+
+void Player::OnDie()
+{
+	if (!isAlive)
+		return;
+
+	isAlive = false;
+	SetActive(false);
 }

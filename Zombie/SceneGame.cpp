@@ -4,10 +4,19 @@
 #include "TileMap.h"
 #include "Zombie.h"
 #include "ZombieSpawner.h"
+#include "GameObject.h"
 
 SceneGame::SceneGame(SceneIds id)
 	:Scene(id)
 {
+}
+
+bool SceneGame::IsInTileMap(const sf::Vector2f& point)
+{
+	sf::FloatRect rect = tileMap->GetGrobalBounds();
+	rect = Utils::ResizeRect(rect, tileMap->GetCellSize() * -2.f);
+
+	return rect.contains(point);        //contains 영역 안에 있으면 true 아니면 false
 }
 
 sf::Vector2f SceneGame::ClampByTileMap(const sf::Vector2f& point)
@@ -80,6 +89,8 @@ void SceneGame::Exit()
 
 void SceneGame::Update(float dt)
 {
+	FindGoAll("Zombie", zombieList, Layers::World);
+
   	Scene::Update(dt);
 
 	worldView.setCenter(player->GetPosition());

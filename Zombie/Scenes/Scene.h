@@ -24,6 +24,8 @@ protected:
 	std::list<GameObject*> resortingGameObjects;
 	std::list<GameObject*> removeGameObjects;
 
+	//충돌 처리할 리스트를 만들어서 활용 예정//
+
 	sf::View worldView;
 	sf::View uiView;
 
@@ -48,6 +50,9 @@ public:
 	virtual void Exit() {};
 
 	virtual void Update(float dt);
+	virtual void LateUpdate(float dt);
+	virtual void FixedUpdate(float dt);
+
 	virtual void Draw(sf::RenderWindow& window);
 
 	virtual GameObject* FindGo(const std::string& name, Layers layer = Layers::Everything);
