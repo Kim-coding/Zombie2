@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ZombieSpawner.h"
+#include "SceneGame.h"
 
 ZombieSpawner::ZombieSpawner(const std::string& name)
 	:GameObject(name)
@@ -34,6 +35,8 @@ void ZombieSpawner::Reset() //초기 값으로 돌려 줌
 	radius = 250.f;
 
 	timer = 0.f;
+	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+
 }
 
 void ZombieSpawner::Update(float dt)
@@ -52,6 +55,9 @@ void ZombieSpawner::Update(float dt)
 			Zombie* zombie = Zombie::Create(zombieType);
 			zombie->Init();
 			zombie->Reset();
+
+		
+
 			zombie->SetPosition(pos);
 
 			SCENE_MGR.GetCurrentScene()->AddGo(zombie);

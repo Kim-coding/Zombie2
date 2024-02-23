@@ -2,6 +2,8 @@
 #include "SpriteGo.h"
 #include "Player.h"
 
+class SceneGame;
+
 class Zombie : public SpriteGo
 {
 public:
@@ -25,7 +27,7 @@ protected:
 	int hp;
 	
 	Player* player;                     //좀비가 플레이어를 추적할 수 있도록
-
+	SceneGame* sceneGame = nullptr;
 	Zombie(const std::string& name = "");
 
 public:
@@ -36,6 +38,5 @@ public:
 	void Reset()override;
 	void Update(float dt)override;
 	void Draw(sf::RenderWindow& window)override;
-
 };
 

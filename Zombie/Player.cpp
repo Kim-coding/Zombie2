@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Player.h"
+#include "TileMap.h"
+#include "SceneGame.h"
 
 Player::Player(const std::string& name)
 	:SpriteGo(name)
@@ -21,6 +23,9 @@ void Player::Release()
 void Player::Reset()
 {
 	SpriteGo::Reset();
+
+	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	//tileMap = dynamic_cast<TileMap*>(SCENE_MGR.GetCurrentScene()->FindGo("Background")); //위의 것으로 변경
 }
 
 void Player::Update(float dt)
@@ -42,27 +47,38 @@ void Player::Update(float dt)
 	//플레이어부터 마우스 포인터를 바라보는 방향과 각도
 
 	
-	direction.x = InputMgr::GetAxis(Axis::Horizontal);    //선생님 코드
+	direction.x = InputMgr::GetAxis(Axis::Horizontal);
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
 
 	if (Utils::Magnitude(direction) > 1.f)
 	{
 		Utils::Normalize(direction);
 	}
-	SetPosition(position + direction * speed * dt);
+	/*SetPosition(position + direction * speed * dt);*/
 	//Translate(position + direction * speed * dt);        //위와 동일
-
 	
-	//float h = InputMgr::GetAxis(Axis::Horizontal);        //내 코드
-	//sf::Vector2f posX = sprite.getPosition();
-	//posX.x += h * speed * dt;
-	//SetPosition(posX);
+	sf::Vector2f pos = position + direction * speed * dt;
+	//if (tileMap != nullptr)
+	//{
+	//  /*sf::FloatRect tileMapBounds = tileMap->GetGrobalBounds();
+	//	const sf::Vector2f tileSize = tileMap->GetCellSize();
+	//	tileMapBounds.left += tileSize.x;
+	//	tileMapBounds.top += tileSize.y;
+	//	tileMapBounds.width -= tileSize.x * 2.f;
+	//	tileMapBounds.height -= tileSize.y * 2.f;*/
 
-	//float v = InputMgr::GetAxis(Axis::Vertical);
-	//sf::Vector2f posY = sprite.getPosition();
-	//posY.y += v * speed * dt;
-	//SetPosition(posY);
-	
+	//	//Utils::Clamp(const sf::Vector2f& v, const sf::FloatRect& rect)함수로 대체
+	//	//pos.x = Utils::Clamp(pos.x, tileMapBounds.left, tileMapBounds.left + tileMapBounds.width);
+	//	//pos.y = Utils::Clamp(pos.y, tileMapBounds.top, tileMapBounds.top + tileMapBounds.height);
+
+	//} //아래 걸로 변경
+
+	if (sceneGame != nullptr)
+	{
+		pos = sceneGame->ClampByTileMap(pos);
+	}
+	SetPosition(pos);
+
 }
 
 void Player::Draw(sf::RenderWindow& window)

@@ -21,6 +21,12 @@ public:
 	void Set(const sf::Vector2f& count, const sf::Vector2f& size);
 	void UpdateTransform();
 
+	sf::FloatRect GetLocalBounds() override;
+	sf::FloatRect GetGrobalBounds() override;
+
+	const sf::Vector2f& GetCellSize() const { return cellSize; }
+	const sf::Vector2f& GetCellCount() const { return cellCount; }
+
 	void SetOrigin(Origins preset) override;
 	void SetOrigin(const sf::Vector2f& newOrigin) override;
 

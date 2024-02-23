@@ -93,6 +93,22 @@ void TileMap::UpdateTransform()
 	transfrom.translate(position - origin);
 }
 
+sf::FloatRect TileMap::GetLocalBounds()       // 경계 검사
+{
+	sf::FloatRect bounds = va.getBounds();    //정점들을 기준으로 바운드를 리턴
+	bounds.left = origin.x;
+	bounds.top = origin.y;
+
+	return bounds;
+}
+
+sf::FloatRect TileMap::GetGrobalBounds()   //UpdateTransform 참고
+{
+	sf::FloatRect bounds = va.getBounds(); //정점들을 기준으로 바운드를 
+
+	return transfrom.transformRect(bounds); //글로벌 좌표로 변환
+}
+
 void TileMap::SetPosition(const sf::Vector2f& pos)    //이동한 만큼 타일도 이동
 {
 	/*sf::Vector2f delta = pos - position;
@@ -146,6 +162,8 @@ void TileMap::Release()
 void TileMap::Reset()
 {
 	GameObject::Reset();
+
+	
 }
 
 void TileMap::Update(float dt)

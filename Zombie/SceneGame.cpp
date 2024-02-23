@@ -10,6 +10,13 @@ SceneGame::SceneGame(SceneIds id)
 {
 }
 
+sf::Vector2f SceneGame::ClampByTileMap(const sf::Vector2f& point)
+{
+	sf::FloatRect rect = tileMap->GetGrobalBounds();
+	rect = Utils::ResizeRect(rect, tileMap->GetCellSize() * -2.f);
+	return 	Utils::Clamp(point, rect);
+}
+
 void SceneGame::Init()
 {
 	AddGo(new TileMap("Background"));
@@ -26,9 +33,14 @@ void SceneGame::Init()
 	player = new Player("Player");
 	AddGo(player);
 
-	TileMap* tilemap = new TileMap("Background");
-	tilemap->sortLayer = -1.f;
-	AddGo(tilemap);
+	tileMap = new TileMap("Background");
+	tileMap->sortLayer = -1.f;
+	AddGo(tileMap);
+
+
+	mospoint = new SpriteGo("mospoint");
+	mospoint->SetTexture("graphics/crosshair.png");
+	mospoint->SetOrigin(Origins::MC);
 
 	Scene::Init();
 }
@@ -84,7 +96,10 @@ void SceneGame::Update(float dt)
 		player->sortLayer = 1;
 		ResortGo(player);
 	}
-
+	sf::Vector2i mousePos = (sf::Vector2i)InputMgr::GetMousePos();
+	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrentScene()->ScreenToWorld(mousePos);
+	mospoint->SetPosition(mouseWorldPos);
+	AddGo(mospoint);
 
 	/*좀비 Scene클래스 에서 삭제되도록 만들었음*/
 	//std::vector<GameObject*> removeZombies;      //좀비 객체들을 저장할 공간
