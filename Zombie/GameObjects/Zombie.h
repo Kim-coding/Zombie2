@@ -19,23 +19,25 @@ public:
 protected:
 	Types type;
 	
-	//스텟
+	
 	int maxHp;
 	float speed;
 	int damage;
 	float attackInterval;
-
 	float attackTimer = 0.f;
-	//현재 상태
+
+	
 	int hp;
 	
 	Player* player = nullptr;
 	SceneGame* sceneGame = nullptr;
-	sf::Vector2f direction;
-	bool isAlive = false;
 
-public:
+	sf::Vector2f direction;
+	bool isAlive = true;
+
 	Zombie(const std::string& name = "");
+public:
+	
 	~Zombie() override = default;
 
 	void Init() override;

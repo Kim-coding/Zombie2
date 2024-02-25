@@ -7,8 +7,8 @@
 Zombie* Zombie::Create(Types ZombieType)
 {
 	Zombie* zombie = new Zombie("Zombie");
-
 	zombie->type = ZombieType;
+
 	switch (ZombieType)
 	{
 	case Zombie::Types::Bloater:
@@ -17,23 +17,22 @@ Zombie* Zombie::Create(Types ZombieType)
 		zombie->speed = 100;
 		zombie->damage = 100;
 		zombie->attackInterval = 1.f;
-
 		break;
+
 	case Zombie::Types::Chaser:
 		zombie->textureId = "graphics/chaser.png";
 		zombie->maxHp = 70;
 		zombie->speed = 75;
 		zombie->damage = 50;
 		zombie->attackInterval = 0.5f;
-
 		break;
+
 	case Zombie::Types::Crawler:
 		zombie->textureId = "graphics/crawler.png";
 		zombie->maxHp = 10;
 		zombie->speed = 50;
 		zombie->damage = 75;
 		zombie->attackInterval = 0.25;
-
 		break;
 	}
 
@@ -55,20 +54,18 @@ void Zombie::Init()
 void Zombie::Release()
 {
 	SpriteGo::Release();
-
 }
 
 void Zombie::Reset()
 {
 	SpriteGo::Reset();
-	hp = maxHp;
-	isAlive = true;
-	attackTimer = attackInterval;
 
 	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
-
-
+	
+	isAlive = true;
+	hp = maxHp;
+	attackTimer = attackInterval;
 }
 
 void Zombie::Update(float dt)
@@ -78,10 +75,9 @@ void Zombie::Update(float dt)
 	if (!isAlive)
 		return;
 
-	direction = player->GetPosition() - position;
-	SetRotation(Utils::Angle(direction));
+	direction = player->GetPosition() - position;  //좀비 진행 방향 : 플레이어
 	Utils::Normalize(direction);
-	//Translate(Utils::GetNormal(direction) * speed * dt);
+	SetRotation(Utils::Angle(direction));          //바라보는 방향
 
 	sf::Vector2f pos = position + direction * speed * dt;
 	if (sceneGame != nullptr)

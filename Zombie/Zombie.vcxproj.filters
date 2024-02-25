@@ -51,22 +51,22 @@
     <ClCompile Include="Framework\Framework.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="GameObjects\Player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="SceneGame.cpp">
+    <ClCompile Include="Scenes\SceneGame.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TileMap.cpp">
+    <ClCompile Include="GameObjects\TileMap.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Zombie.cpp">
+    <ClCompile Include="GameObjects\Zombie.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ZombieSpawner.cpp">
+    <ClCompile Include="GameObjects\ZombieSpawner.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
+    <ClCompile Include="GameObjects\Bullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -113,22 +113,22 @@
     <ClInclude Include="Framework\Framework.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="GameObjects\Player.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="SceneGame.h">
+    <ClInclude Include="Scenes\SceneGame.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TileMap.h">
+    <ClInclude Include="GameObjects\TileMap.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Zombie.h">
+    <ClInclude Include="GameObjects\Zombie.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ZombieSpawner.h">
+    <ClInclude Include="GameObjects\ZombieSpawner.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
+    <ClInclude Include="GameObjects\Bullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

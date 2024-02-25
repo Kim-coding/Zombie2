@@ -16,7 +16,7 @@ sf::Vector2f Scene::ScreenToWorld(sf::Vector2i screenPos)
 
 sf::Vector2i Scene::WorldToScreen(sf::Vector2f worldPos)
 {
-	return FRAMEWORK.GetWindow().mapCoordsToPixel(worldPos, uiView);
+	return FRAMEWORK.GetWindow().mapCoordsToPixel(worldPos, worldView);
 }
 
 sf::Vector2f Scene::ScreenToUi(sf::Vector2i screenPos)
@@ -287,13 +287,17 @@ GameObject* Scene::AddGo(GameObject* obj, Layers layer)
 
 void Scene::ResortGo(GameObject* obj)
 {
-	if(std::find(resortingGameObjects.begin(), resortingGameObjects.end(),obj)== resortingGameObjects.end())
+	if (std::find(resortingGameObjects.begin(), resortingGameObjects.end(), obj) == resortingGameObjects.end())
+	{
 		resortingGameObjects.push_back(obj);
+	}
 }
 
 void Scene::RemoveGo(GameObject* obj)
 {	
 	//obj->SetActive(false);
 	if (std::find(removeGameObjects.begin(), removeGameObjects.end(), obj) == removeGameObjects.end())
+	{
 		removeGameObjects.push_back(obj);
+	}
 }

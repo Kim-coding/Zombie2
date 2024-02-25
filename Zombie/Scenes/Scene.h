@@ -24,8 +24,6 @@ protected:
 	std::list<GameObject*> resortingGameObjects;
 	std::list<GameObject*> removeGameObjects;
 
-	//충돌 처리할 리스트를 만들어서 활용 예정//
-
 	sf::View worldView;
 	sf::View uiView;
 

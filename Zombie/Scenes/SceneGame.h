@@ -15,8 +15,8 @@ protected:
 
 	Zombie* zombie = nullptr;
 	SpriteGo* mospoint;
-	std::vector< ZombieSpawner*> spawners;
 
+	std::vector< ZombieSpawner*> spawners;
 	std::list<GameObject*> zombieList;         //좀비를 저장해주기 위함
 
 public:

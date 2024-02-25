@@ -17,7 +17,7 @@ void Player::Init()
 	SetOrigin(Origins::MC);
 
 	isFiring = false;
-	fireTime = fireInterval;
+	fireTimer = fireInterval;
 }
 
 void Player::Release()
@@ -51,15 +51,13 @@ void Player::Update(float dt)
 	look = mouseWorldPos - position;
 	Utils::Normalize(look);        
 
-	float angle = Utils::Angle(look);          //각도
-	sprite.setRotation(angle);
+	float angle = Utils::Angle(look);          //바라보는 방향
+	SetRotation(angle);
 
-	//SetRotation(); //호출
 	//플레이어부터 마우스 포인터를 바라보는 방향과 각도
 
 	direction.x = InputMgr::GetAxis(Axis::Horizontal);
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
-
 	if (Utils::Magnitude(direction) > 1.f)
 	{
 		Utils::Normalize(direction);
@@ -98,15 +96,16 @@ void Player::Update(float dt)
 		isFiring = false;
 
 	}
-	fireTime += dt;
-	if (isFiring && fireTime > fireInterval)
+
+	fireTimer += dt;                                //발사 간격
+	if (isFiring && fireTimer > fireInterval)
 	{
 		Fire();
-		fireTime = 0.f;
+		fireTimer = 0.f;
 	}
 	if (isNoDamage)
 	{
-		noDamageTime += dt;
+		noDamageTimer += dt;
 		if (noDamageTimer > noDamageTime)
 		{
 			isNoDamage = false;
@@ -114,10 +113,6 @@ void Player::Update(float dt)
 	}
 }
 
-void Player::FixedUpdate(float dt)
-{
-	
-}
 
 void Player::Draw(sf::RenderWindow& window)
 {
@@ -137,7 +132,7 @@ void Player::Fire()
 
 void Player::OnDamage(int damage)
 {
-	if (!isAlive || !isNoDamage)
+	if (!isAlive || isNoDamage)
 		return;
 
 	hp -= damage;

@@ -28,9 +28,7 @@ sf::Vector2f SceneGame::ClampByTileMap(const sf::Vector2f& point)
 
 void SceneGame::Init()
 {
-	AddGo(new TileMap("Background"));
-
-	spawners.push_back(new ZombieSpawner());
+	spawners.push_back(new ZombieSpawner());        //좀비 스폰너 2개
 	spawners.push_back(new ZombieSpawner());
 	
 	for (auto s : spawners)
@@ -43,9 +41,8 @@ void SceneGame::Init()
 	AddGo(player);
 
 	tileMap = new TileMap("Background");
-	tileMap->sortLayer = -1.f;
+	tileMap->sortLayer = -1;
 	AddGo(tileMap);
-
 
 	mospoint = new SpriteGo("mospoint");
 	mospoint->SetTexture("graphics/crosshair.png");
@@ -65,7 +62,7 @@ void SceneGame::Enter()
 
 
 	sf::Vector2f windowSize = (sf::Vector2f)FRAMEWORK.GetWindowSize();
-	sf::Vector2f centerPos = (sf::Vector2f)FRAMEWORK.GetWindowSize() * 0.5f;
+	sf::Vector2f centerPos = windowSize * 0.5f;
 
 	worldView.setSize(windowSize);             //화면이 캐릭터를 따라가도록 만들거임
 	worldView.setCenter({ 0.f,0.f });
@@ -73,12 +70,12 @@ void SceneGame::Enter()
 	uiView.setCenter(centerPos);
 
 	TileMap* tileMap = dynamic_cast<TileMap*>(FindGo("Background"));
-	tileMap->SetPosition({0, 0});
+	tileMap->SetPosition({ 0.f, 0.f });
 	tileMap->SetOrigin(Origins::MC);
-	tileMap->SetRotation(0);
+	//tileMap->SetRotation(45);      //타일 기울기
 	//tileMap->SetScale({2.f, 2.f}); //타일 스케일 2배
 
-	player->SetPosition({ 0, 0 });
+	player->SetPosition({ 0.f, 0.f });
 }
 
 void SceneGame::Exit()
@@ -89,7 +86,7 @@ void SceneGame::Exit()
 
 void SceneGame::Update(float dt)
 {
-	FindGoAll("Zombie", zombieList, Layers::World);
+	FindGoAll("Zombie", zombieList, Layers::World);   //Zombie 객체를 찾아 zombieList에 push_back//
 
   	Scene::Update(dt);
 
@@ -98,15 +95,17 @@ void SceneGame::Update(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
 		TileMap* tilemap = dynamic_cast<TileMap*>(FindGo("Background"));
-		tilemap->sortLayer = 1;
+		if (tilemap->sortLayer == 1)
+		{
+			tilemap->sortLayer = 1;          //타일을 제일 앞으로 보내기
+		}
+		else
+		{
+			tilemap->sortLayer = -1;         //타일을 제일 뒤로 보내기
+		}
 		ResortGo(tilemap);
 	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
-	{
-		Player* player = dynamic_cast<Player*>(FindGo("Player"));
-		player->sortLayer = 1;
-		ResortGo(player);
-	}
+	
 	sf::Vector2i mousePos = (sf::Vector2i)InputMgr::GetMousePos();
 	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrentScene()->ScreenToWorld(mousePos);
 	mospoint->SetPosition(mouseWorldPos);
@@ -132,9 +131,6 @@ void SceneGame::Update(float dt)
 		RemoveGo(obj);
 		delete obj;
 	}*/
-
-
-	
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
