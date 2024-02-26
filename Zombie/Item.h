@@ -17,7 +17,7 @@ public:
 	static Item* Create(Types t, int v);
 protected:
 	Types type = Types::None;
-	int value = 0;
+	int value = 500;               // Αυ°‘·®
 
 	Player* player;
 

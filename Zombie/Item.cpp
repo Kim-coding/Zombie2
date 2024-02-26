@@ -29,7 +29,7 @@ Item::Item(const std::string& name)
 void Item::Reset()
 {
 	SpriteGo::Reset();
-	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
+	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));  //플레이어 충돌 
 }
 
 void Item::FixedUpdate(float dt)

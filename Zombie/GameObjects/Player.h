@@ -46,5 +46,7 @@ public:
 	void OnDamage(int damage);
 	void OnDie();
 	void OnItem(Item* item);
+
+	bool GetIsAlive() { return isAlive; }       //플레이어가 사망 시 씬게임에서 호출하기 위함
 };
 

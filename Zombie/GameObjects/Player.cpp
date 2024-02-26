@@ -5,6 +5,7 @@
 #include "Bullet.h"
 #include "Zombie.h"
 #include "Item.h"
+#include "UiHud.h"
 
 Player::Player(const std::string& name)
 	:SpriteGo(name)
@@ -18,7 +19,7 @@ void Player::Init()
 	SetOrigin(Origins::MC);
 
 	isFiring = false;
-	//fireTimer = fireInterval;
+	fireTimer = fireInterval;
 }
 
 void Player::Release()
@@ -31,7 +32,7 @@ void Player::Reset()
 	SpriteGo::Reset();
 
 	isFiring = false;
-	//fireTimer = fireInterval;
+	fireTimer = fireInterval;
 
 	hp = maxHp;
 	ammo = maxAmmo;
@@ -102,7 +103,7 @@ void Player::Update(float dt)
 	}
 
 	fireTimer += dt;                                //발사 간격
-	if (isFiring && /*fireTimer > fireInterval &&*/ ammo > 0)
+	if (isFiring && fireTimer > fireInterval && ammo > 0)
 	{
 		Fire();
 		fireTimer = 0.f;
@@ -132,6 +133,8 @@ void Player::Fire()
 	bullet->Fire(look, bulletSpeed, bulletDamage);
 	sceneGame->AddGo(bullet);
 
+	SOUND_MGR.PlaySfx("sound/shoot.wav");
+
 }
 
 void Player::OnDamage(int damage)
@@ -140,6 +143,7 @@ void Player::OnDamage(int damage)
 		return;
 
 	hp -= damage;
+	sceneGame->GetHud()->SetHp(hp,maxHp);
 
 	isNoDamage = true;
 	noDamageTimer = 0.f;
@@ -169,6 +173,7 @@ void Player::OnItem(Item* item)
 		break;
 	case Item::Types::Health:
 		hp += item->GetValue();
+		sceneGame->GetHud()->SetHp(hp, maxHp);
 		break;
 	}
 }

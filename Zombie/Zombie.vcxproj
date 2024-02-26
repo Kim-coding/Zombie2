@@ -165,7 +165,10 @@
     <ClCompile Include="GameObjects\TileMap.cpp" />
     <ClCompile Include="GameObjects\Zombie.cpp" />
     <ClCompile Include="GameObjects\ZombieSpawner.cpp" />
+    <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="Spawner.cpp" />
+    <ClCompile Include="SprieGoEffect.cpp" />
+    <ClCompile Include="UiHud.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjects\Bullet.h" />
@@ -190,7 +193,10 @@
     <ClInclude Include="GameObjects\TileMap.h" />
     <ClInclude Include="GameObjects\Zombie.h" />
     <ClInclude Include="GameObjects\ZombieSpawner.h" />
+    <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="Spawner.h" />
+    <ClInclude Include="SprieGoEffect.h" />
+    <ClInclude Include="UiHud.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -50,5 +50,7 @@ public:
 
 	void OnDamage(int damage);
 	void OnDie();
+
+	void PlayBloodEffect();
 };
 

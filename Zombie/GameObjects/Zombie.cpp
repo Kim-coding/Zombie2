@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "TileMap.h"
 #include "SceneGame.h"
+#include "SprieGoEffect.h"
 
 Zombie* Zombie::Create(Types ZombieType)
 {
@@ -153,14 +154,29 @@ void Zombie::OnDamage(int damage)
 
 void Zombie::OnDie()
 {
-	//좀비가 죽을 때 효과를 넣어주면 됨.
+	
 	if (!isAlive)
 		return;
-
+	
 	isAlive = false;
 	SetActive(false);
 	sceneGame->RemoveGo(this);
 
+	PlayBloodEffect();
+}
+
+void Zombie::PlayBloodEffect()
+{
+	SprieGoEffect* effectBlood = new SprieGoEffect();
+	effectBlood->Init();
+	effectBlood->SetOrigin(Origins::MC);
+	effectBlood->SetTexture("graphics/blood.png");
+	effectBlood->Reset();
+	effectBlood->sortLayer = -1;
+	effectBlood->sortOrder = 1;
+	effectBlood->SetPosition(position);
+	sceneGame->ResortGo(effectBlood);
+	sceneGame->AddGo(effectBlood);
 }
 
 

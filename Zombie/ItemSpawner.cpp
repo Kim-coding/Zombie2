@@ -23,9 +23,9 @@ void ItemSpawner::Reset()
 	itemTypes.push_back(Item::Types::Health);
 	itemTypes.push_back(Item::Types::Health);
 
-	interval = 5.f;
+	interval = 4.f;
 	spawnCount = 1;
-	radius = 200.f;
+	radius = 300.f;
 
 	timer = 0.f;
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
