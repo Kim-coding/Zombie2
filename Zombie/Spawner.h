@@ -10,6 +10,8 @@ protected:
 	int spawnCount = 1;                           //한 번에 생성되는 수
 	float radius = 250.f;                         //생성 반경
 
+	int maxCount = 10;                           //최대 생성  수
+	int Count = 0;                               //현재 생성된 개수
 	float timer = 0.f;
 
 	SceneGame* sceneGame = nullptr;

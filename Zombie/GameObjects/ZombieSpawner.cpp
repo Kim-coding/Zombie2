@@ -10,7 +10,6 @@ ZombieSpawner::ZombieSpawner(const std::string& name)
 
 GameObject* ZombieSpawner::Create()
 {
-
 	Zombie::Types zombieType = zombieTypes[Utils::RandomRange(0, zombieTypes.size() - 1)];
 	return 	Zombie::Create(zombieType);
 }
@@ -21,7 +20,6 @@ void ZombieSpawner::Reset()
 
 	zombieTypes.clear();
 	zombieTypes.push_back(Zombie::Types::Bloater);      //랜덤으로 뽑을 때 확률 변화를 주기 위해 여러번 작성
-	zombieTypes.push_back(Zombie::Types::Chaser);
 	zombieTypes.push_back(Zombie::Types::Chaser);
 	zombieTypes.push_back(Zombie::Types::Chaser);
 	zombieTypes.push_back(Zombie::Types::Crawler);

@@ -30,6 +30,9 @@ sf::Vector2f SceneGame::ClampByTileMap(const sf::Vector2f& point)
 
 void SceneGame::Init()
 {
+	tileMap = new TileMap("Background");
+	AddGo(tileMap);
+
 	spawners.push_back(new ZombieSpawner());        //ZombieSpawner
 	spawners.push_back(new ZombieSpawner());
 	itemspawners.push_back(new ItemSpawner());      //ItemSpawner
@@ -49,10 +52,8 @@ void SceneGame::Init()
 	player = new Player("Player");
 	AddGo(player);
 
-	tileMap = new TileMap("Background");
-	tileMap->sortLayer = -1;
-	AddGo(tileMap);
 
+	//Ui
 	crosshair = new SpriteGo("Crosshair");
 	crosshair->SetTexture("graphics/crosshair.png");
 	crosshair->sortLayer = -1;
@@ -96,7 +97,7 @@ void SceneGame::Enter()
 
 	uihud->SetScore(0);
 	uihud->SetHiScore(0);
-	uihud->SetAmmo(0,0);
+	uihud->SetAmmo(uihud->GetAmmo(), uihud->GetTotalAmmo());
 	uihud->SetWave(0);
 	uihud->SetZombieCount(0);
 }
@@ -130,27 +131,6 @@ void SceneGame::Update(float dt)
 	}
 	
 	crosshair->SetPosition(ScreenToUi((sf::Vector2i)InputMgr::GetMousePos()));
-
-	/*좀비 Scene클래스 에서 삭제되도록 만들었음*/
-	//std::vector<GameObject*> removeZombies;      //좀비 객체들을 저장할 공간
-	//for (auto obj : gameObjects)
-	//{
-	//	Zombie* zombie = dynamic_cast<Zombie*>(obj);
-	//	if (zombie != nullptr)
-	//	{
-	//		float distance = Utils::Distance(player->GetPosition(), zombie->GetPosition());
-	//		if (distance <= 10.f)
-	//		{
-	//			removeZombies.push_back(zombie);           //player와 거리가 10이하인 것은 충돌된 것으로 삭제 대상
-	//		}
-	//	}
-	//}
-
-	/*for (auto obj : removeZombies)
-	{
-		RemoveGo(obj);
-		delete obj;
-	}*/
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)

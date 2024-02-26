@@ -4,6 +4,7 @@
 #include "TileMap.h"
 #include "SceneGame.h"
 #include "SprieGoEffect.h"
+#include "UiHud.h"
 
 Zombie* Zombie::Create(Types ZombieType)
 {
@@ -161,7 +162,8 @@ void Zombie::OnDie()
 	isAlive = false;
 	SetActive(false);
 	sceneGame->RemoveGo(this);
-
+	sceneGame->GetHud()->AddScore(10);
+	sceneGame->GetHud()->AddHiScore();
 	PlayBloodEffect();
 }
 
@@ -172,10 +174,10 @@ void Zombie::PlayBloodEffect()
 	effectBlood->SetOrigin(Origins::MC);
 	effectBlood->SetTexture("graphics/blood.png");
 	effectBlood->Reset();
-	effectBlood->sortLayer = -1;
+	effectBlood->sortLayer = 0;
 	effectBlood->sortOrder = 1;
 	effectBlood->SetPosition(position);
-	sceneGame->ResortGo(effectBlood);
+
 	sceneGame->AddGo(effectBlood);
 }
 

@@ -27,6 +27,12 @@ protected:
 	sf::Vector2f referenceResolution = { 1920, 1080 };
 	sf::Vector2f resolution;
 
+	int score = 0;
+	int hiscore = 0;
+	int ammo = 20;
+	int totalAmmo = 60;
+	int wave = 1;
+
 public:
 	UiHud(const std::string& name = "");
 	virtual ~UiHud() override = default;
@@ -41,6 +47,37 @@ public:
 	void SetWave(int w);
 	void SetZombieCount(int count);
 
+	
+	/////////////////추가부분////////////////////////
+	void AddScore(int score)
+	{
+		this->score += score;
+		SetScore(this->score);
+	}
+	void AddHiScore()
+	{	
+		if (hiscore < score)
+		{
+			hiscore += 10;
+			SetHiScore(hiscore);
+		}
+	}
+	void AddWave()        //모든 좀비가 다 죽으면 웨이브 1 증가
+	{
+		wave += 1;
+		SetWave(wave);
+	}
+	int GetAmmo()
+	{
+		return ammo;
+	}
+	int GetTotalAmmo()
+	{
+		return totalAmmo;
+	}
+	
+	/////////////////////////////////////////////////
+	
 
 	virtual void Init() override;
 	virtual void Release() override;

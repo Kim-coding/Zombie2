@@ -17,7 +17,7 @@ void UiHud::SetResoultion(const sf::Vector2f resolution)
 
 void UiHud::SetHiScore(int s)
 {
-	textScore.SetString(formatHiScore + std::to_string(s));
+	textHiScore.SetString(formatHiScore + std::to_string(s));
 }
 
 void UiHud::SetAmmo(int current, int total)
@@ -112,9 +112,9 @@ void UiHud::Reset()
 
 	SetScore(0);
 	SetHiScore(0);
-	SetAmmo(0,0);
+	SetAmmo(ammo,totalAmmo);
 	SetHp(10,10);
-	SetWave(0);
+	SetWave(1);
 	SetZombieCount(0);
 }
 

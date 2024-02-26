@@ -40,7 +40,7 @@ void Spawner::Update(float dt)
 	GameObject::Update(dt);
 
 	timer += dt;
-	if (timer > interval)
+	if (timer > interval && Count < maxCount)
 	{
 		timer = 0.f;
 
@@ -58,6 +58,7 @@ void Spawner::Update(float dt)
 
 			SCENE_MGR.GetCurrentScene()->AddGo(newGo);
 		}
+		++Count;
 	}
 
 }

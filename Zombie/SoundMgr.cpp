@@ -35,17 +35,12 @@ void SoundMgr::Release()
 
 void SoundMgr::Update(float dt)
 {
-	if (!playing.empty())
-	{
-		for (auto it = playing.begin(); it != playing.end();)
-		{
-			
-		}
-	}
+	
 }
 
 void SoundMgr::PlayBgm(std::string id, bool crossFade)//crossFade부분을 구현
 {
+
 }
 
 void SoundMgr::StopBgm()
