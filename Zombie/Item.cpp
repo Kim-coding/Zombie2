@@ -6,7 +6,7 @@ Item* Item::Create(Types t, int v)
 {
 	Item* newItem = new Item();
 	newItem->type = t;
-	newItem->value = v;
+	newItem->hpValue = v;
 
 	switch (newItem->type)
 	{

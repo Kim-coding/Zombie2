@@ -35,8 +35,21 @@ void SoundMgr::Release()
 
 void SoundMgr::Update(float dt)
 {
-	
+	std::vector<sf::Sound*> toMove;
+	for (auto sound : playing)
+	{
+		if (sound->getStatus() == sf::Sound::Stopped)
+		{
+			toMove.push_back(sound);
+		}
+	}
+	for (auto sound : toMove)
+	{
+		waiting.push_back(sound);
+		playing.remove(sound);
+	}
 }
+
 
 void SoundMgr::PlayBgm(std::string id, bool crossFade)//crossFade부분을 구현
 {
@@ -45,9 +58,7 @@ void SoundMgr::PlayBgm(std::string id, bool crossFade)//crossFade부분을 구현
 
 void SoundMgr::StopBgm()
 {
-
-
-
+	
 }
 
 void SoundMgr::PlaySfx(std::string id, bool loop)

@@ -17,8 +17,8 @@ public:
 	static Item* Create(Types t, int v);
 protected:
 	Types type = Types::None;
-	int value = 500;               // 증가량
-
+	int hpValue = 500;               // 증가량
+	int ammoValue = 30;
 	Player* player;
 
 public:
@@ -26,7 +26,8 @@ public:
 	~Item() override = default;
 
 	Types GetType() const { return type; }
-	int GetValue() const { return value; }
+	int GetHpValue() const { return hpValue; }
+	int GetAmmoValue() const { return ammoValue; }
 
 	void Reset() override;
 	void FixedUpdate(float dt) override;

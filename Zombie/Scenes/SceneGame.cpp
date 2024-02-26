@@ -30,9 +30,6 @@ sf::Vector2f SceneGame::ClampByTileMap(const sf::Vector2f& point)
 
 void SceneGame::Init()
 {
-	tileMap = new TileMap("Background");
-	AddGo(tileMap);
-
 	spawners.push_back(new ZombieSpawner());        //ZombieSpawner
 	spawners.push_back(new ZombieSpawner());
 	itemspawners.push_back(new ItemSpawner());      //ItemSpawner
@@ -52,6 +49,9 @@ void SceneGame::Init()
 	player = new Player("Player");
 	AddGo(player);
 
+	tileMap = new TileMap("Background");
+	tileMap->sortLayer = -1;
+	AddGo(tileMap);
 
 	//Ui
 	crosshair = new SpriteGo("Crosshair");
@@ -98,8 +98,8 @@ void SceneGame::Enter()
 	uihud->SetScore(0);
 	uihud->SetHiScore(0);
 	uihud->SetAmmo(uihud->GetAmmo(), uihud->GetTotalAmmo());
-	uihud->SetWave(0);
-	uihud->SetZombieCount(0);
+	uihud->SetWave(1);
+	uihud->SetZombieCount(20);
 }
 
 void SceneGame::Exit()
@@ -115,20 +115,6 @@ void SceneGame::Update(float dt)
   	Scene::Update(dt);
 
 	worldView.setCenter(player->GetPosition());
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-	{
-		TileMap* tilemap = dynamic_cast<TileMap*>(FindGo("Background"));
-		if (tilemap->sortLayer == 1)
-		{
-			tilemap->sortLayer = 1;          //타일을 제일 앞으로 보내기
-		}
-		else
-		{
-			tilemap->sortLayer = -1;         //타일을 제일 뒤로 보내기
-		}
-		ResortGo(tilemap);
-	}
 	
 	crosshair->SetPosition(ScreenToUi((sf::Vector2i)InputMgr::GetMousePos()));
 }

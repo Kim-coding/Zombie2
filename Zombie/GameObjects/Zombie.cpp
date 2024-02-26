@@ -97,13 +97,6 @@ void Zombie::Update(float dt)
 	}
 	SetPosition(pos);
 
-
-
-	//if (Utils::Distance(position, player->GetPosition()) < 50.f)  
-	//{
-	//	SCENE_MGR.GetCurrentScene()->RemoveGo(this);  //좀비 삭제 부분 RemoveGo에 조건에 맞는 좀비 객체 전달
-	//}
-
 	/*auto& list = sceneGame->GetZombieList();
 	for (auto go : list)
 	{
@@ -155,7 +148,6 @@ void Zombie::OnDamage(int damage)
 
 void Zombie::OnDie()
 {
-	
 	if (!isAlive)
 		return;
 	
@@ -165,6 +157,9 @@ void Zombie::OnDie()
 	sceneGame->GetHud()->AddScore(10);
 	sceneGame->GetHud()->AddHiScore();
 	PlayBloodEffect();
+
+	sceneGame->GetHud()->AddZombies();
+
 }
 
 void Zombie::PlayBloodEffect()
@@ -173,11 +168,11 @@ void Zombie::PlayBloodEffect()
 	effectBlood->Init();
 	effectBlood->SetOrigin(Origins::MC);
 	effectBlood->SetTexture("graphics/blood.png");
-	effectBlood->Reset();
 	effectBlood->sortLayer = 0;
 	effectBlood->sortOrder = 1;
 	effectBlood->SetPosition(position);
-
+	effectBlood->SetRotation(Utils::RandomRange(0.f, 360.f));
+	
 	sceneGame->AddGo(effectBlood);
 }
 

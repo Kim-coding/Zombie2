@@ -20,7 +20,6 @@ void Bullet::Init()
 {
 	SpriteGo::Init();
 	SetTexture("graphics/bullet.png");
-	/*SetScale({5,5});*/
 	SetOrigin(Origins::ML);
 }
 

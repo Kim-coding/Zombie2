@@ -57,14 +57,14 @@ void UiHud::Init()
 	sf::Font& font = RES_MGR_FONT.Get("fonts/zombiecontrol.ttf");
 	imgAmmoIcon.SetTexture("graphics/ammo_icon.png");
 
-	float textSize = 40.f;
+	float textSize = 50.f;
 	textScore.Set(font, "", textSize, sf::Color::White);
 	textHiScore.Set(font, "", textSize, sf::Color::White);
 	textAmmo.Set(font, "", textSize, sf::Color::White);
 	textWave.Set(font, "", textSize, sf::Color::White);
 	textZombieCount.Set(font, "", textSize, sf::Color::White);
 	gaugeHp.setFillColor(sf::Color::Red);
-	gaugeHp.setSize(gaugeHpSize);
+
 
 	textScore.SetOrigin(Origins::TL);
 	textHiScore.SetOrigin(Origins::TR);
@@ -75,17 +75,17 @@ void UiHud::Init()
 	textZombieCount.SetOrigin(Origins::BR);
 
 	//Top
-	float topY = 150.f;
+	float topY = 50.f;
 
-	textScore.SetPosition({ 150.f, topY });
-	textHiScore.SetPosition({ referenceResolution.x - 150.f, topY });
+	textScore.SetPosition({ 100.f, topY });
+	textHiScore.SetPosition({ referenceResolution.x - 100.f, topY });
 
 	//Button
-	float ButtonY = referenceResolution.y - 150.f;
+	float ButtonY = referenceResolution.y - 50.f;
 	imgAmmoIcon.SetPosition({ 150.f, ButtonY });
 	textAmmo.SetPosition({ 400.f, ButtonY });
-	gaugeHp.setPosition({ 800.f, ButtonY });
-	textWave.SetPosition({ referenceResolution.x - 400.f, ButtonY });
+	gaugeHp.setPosition({ 600.f, ButtonY });
+	textWave.SetPosition({ referenceResolution.x - 600.f, ButtonY });
 	textZombieCount.SetPosition({ referenceResolution.x - 150.f, ButtonY });
 }
 
@@ -104,18 +104,33 @@ void UiHud::Update(float dt)
 	textAmmo.Update(dt);
 	textWave.Update(dt);
 	textZombieCount.Update(dt);
+
+	if (zombies == 0)
+	{
+		timer += dt;
+		if (timer > 5)
+		{
+			NextWave();
+			spawnerZpmbies *= 2;
+			zombies = spawnerZpmbies;
+			SetZombies(zombies);
+		}
+	}
+
 }
 
 void UiHud::Reset()
 {
 	GameObject::Reset();
 
+	spawnerZpmbies = 20;
+
 	SetScore(0);
 	SetHiScore(0);
-	SetAmmo(ammo,totalAmmo);
-	SetHp(10,10);
+	SetAmmo(20, 80);
+	SetHp(1,1);
 	SetWave(1);
-	SetZombieCount(0);
+	SetZombieCount(20);
 }
 
 

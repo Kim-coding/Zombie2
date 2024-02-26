@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Spawner.h"
 #include "SceneGame.h"
+#include "UiHud.h"
 
 Spawner::Spawner(const std::string& name)
 	:GameObject(name)
@@ -30,6 +31,7 @@ void Spawner::Reset()
 	interval = 1.f;
 	spawnCount = 1;
 	radius = 250.f;
+	maxSpawn = 10;
 
 	timer = 0.f;
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
@@ -40,7 +42,20 @@ void Spawner::Update(float dt)
 	GameObject::Update(dt);
 
 	timer += dt;
-	if (timer > interval && Count < maxCount)
+	zombieCount = sceneGame->GetHud()->GetZombies();
+	if (zombieCount == 0)
+	{
+		WaveTimer += dt;
+		if (WaveTimer > 5)
+		{
+			WaveTimer = 0.f;
+			maxSpawn *= 2;
+			Count = 0;
+		}
+
+	}
+
+	if (timer > interval && Count < maxSpawn )
 	{
 		timer = 0.f;
 

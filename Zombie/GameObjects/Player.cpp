@@ -69,20 +69,6 @@ void Player::Update(float dt)
 	}
 	
 	sf::Vector2f pos = position + direction * speed * dt;
-	//if (tileMap != nullptr)
-	//{
-	//  /*sf::FloatRect tileMapBounds = tileMap->GetGrobalBounds();
-	//	const sf::Vector2f tileSize = tileMap->GetCellSize();
-	//	tileMapBounds.left += tileSize.x;
-	//	tileMapBounds.top += tileSize.y;
-	//	tileMapBounds.width -= tileSize.x * 2.f;
-	//	tileMapBounds.height -= tileSize.y * 2.f;*/
-
-	//	//Utils::Clamp(const sf::Vector2f& v, const sf::FloatRect& rect)함수로 대체
-	//	//pos.x = Utils::Clamp(pos.x, tileMapBounds.left, tileMapBounds.left + tileMapBounds.width);
-	//	//pos.y = Utils::Clamp(pos.y, tileMapBounds.top, tileMapBounds.top + tileMapBounds.height);
-
-	//} //아래 걸로 변경
 
 	if (sceneGame != nullptr)
 	{
@@ -90,6 +76,28 @@ void Player::Update(float dt)
 	}
 	SetPosition(pos);
 
+	if (InputMgr::GetKeyDown(sf::Keyboard::R))
+	{
+		if (magazine >= maxAmmo)      //기존의 탄창은 버리고 새로운 탄창 교체 하므로 20개 단위로 변경
+		{
+			magazine -= maxAmmo;
+			ammo += maxAmmo;
+			if (ammo >= maxAmmo)
+			{
+				ammo = maxAmmo;
+			}
+		}
+		else
+		{
+			ammo += magazine;
+			magazine = 0;
+			if (ammo >= 20)
+			{
+				ammo = 20;
+			}
+		}
+		sceneGame->GetHud()->SetAmmo(ammo, magazine + ammo);
+	}
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
@@ -116,6 +124,7 @@ void Player::Update(float dt)
 			isNoDamage = false;
 		}
 	}
+
 }
 
 
@@ -126,6 +135,9 @@ void Player::Draw(sf::RenderWindow& window)
 
 void Player::Fire()
 {
+	ammo -= 1;
+	sceneGame->GetHud()->SetAmmo(ammo, magazine + ammo);
+		
 	Bullet* bullet = new Bullet();
 	bullet->Init();
 	bullet->Reset();
@@ -169,10 +181,13 @@ void Player::OnItem(Item* item)
 	switch (item->GetType())
 	{
 	case Item::Types::Ammo:
-		ammo += item->GetValue();
+		magazine += item->GetAmmoValue();
+		if (magazine > maxMagazine)
+			magazine = maxMagazine;
+		sceneGame->GetHud()->SetAmmo(ammo, magazine + ammo);
 		break;
 	case Item::Types::Health:
-		hp += item->GetValue();
+		hp += item->GetHpValue();
 		sceneGame->GetHud()->SetHp(hp, maxHp);
 		break;
 	}

@@ -15,14 +15,16 @@ protected:
 	SceneGame* sceneGame = nullptr;
 	Zombie* zombie;
 
-	float fireInterval = 0.5f;
+	float fireInterval = 0.1f;
 	float bulletSpeed = 1000.f;
 	int bulletDamage = 30;
 	
 	int maxHp = 1000;
 	int hp;
-	int maxAmmo = 20;
-	int ammo = maxAmmo;
+	int maxAmmo = 20;            //최대 장전 가능한 총알 수
+	int ammo = 20;               //사용가능한 총알 수
+	int maxMagazine = 200;       //최대 보유가능 총알 수
+	int magazine = 60;           //소유중인 총알 수
 
 	bool isAlive = true;
 	bool isNoDamage = false;
