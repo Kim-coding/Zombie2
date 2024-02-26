@@ -3,24 +3,21 @@
 #include "SceneGame.h"
 
 ZombieSpawner::ZombieSpawner(const std::string& name)
-	:GameObject(name)
+	:Spawner(name)
 {
 }
 
-void ZombieSpawner::Init()
+
+GameObject* ZombieSpawner::Create()
 {
-	GameObject::Init();
+
+	Zombie::Types zombieType = zombieTypes[Utils::RandomRange(0, zombieTypes.size() - 1)];
+	return 	Zombie::Create(zombieType);
 }
 
-void ZombieSpawner::Release()
+void ZombieSpawner::Reset()
 {
-	GameObject::Release();
-
-}
-
-void ZombieSpawner::Reset() //초기 값으로 돌려 줌
-{
-	GameObject::Reset();
+	Spawner::Reset();
 
 	zombieTypes.clear();
 	zombieTypes.push_back(Zombie::Types::Bloater);      //랜덤으로 뽑을 때 확률 변화를 주기 위해 여러번 작성
@@ -39,29 +36,4 @@ void ZombieSpawner::Reset() //초기 값으로 돌려 줌
 
 }
 
-void ZombieSpawner::Update(float dt)
-{
-	GameObject::Update(dt);
-	timer += dt;
-	if (timer > interval)
-	{
-		timer = 0.f;
 
-		for (int i = 0; i < spawnCount; ++i)
-		{
-			sf::Vector2f pos = position + Utils::RandomInUnitCircle() * radius;  //랜덤한 위치에 생성
-			Zombie::Types zombieType = zombieTypes[Utils::RandomRange(0, zombieTypes.size())];
-			
-			Zombie* zombie = Zombie::Create(zombieType);
-			zombie->Init();
-			zombie->Reset();
-
-		
-
-			zombie->SetPosition(pos);
-
-			SCENE_MGR.GetCurrentScene()->AddGo(zombie);
-		}
-	}
-
-}

@@ -4,6 +4,7 @@
 #include "SceneGame.h"
 #include "Bullet.h"
 #include "Zombie.h"
+#include "Item.h"
 
 Player::Player(const std::string& name)
 	:SpriteGo(name)
@@ -17,7 +18,7 @@ void Player::Init()
 	SetOrigin(Origins::MC);
 
 	isFiring = false;
-	fireTimer = fireInterval;
+	//fireTimer = fireInterval;
 }
 
 void Player::Release()
@@ -30,8 +31,11 @@ void Player::Reset()
 	SpriteGo::Reset();
 
 	isFiring = false;
-	fireTimer = fireInterval;
+	//fireTimer = fireInterval;
+
 	hp = maxHp;
+	ammo = maxAmmo;
+	
 	isAlive = true;
 	isNoDamage = false;
 
@@ -98,7 +102,7 @@ void Player::Update(float dt)
 	}
 
 	fireTimer += dt;                                //발사 간격
-	if (isFiring && fireTimer > fireInterval)
+	if (isFiring && /*fireTimer > fireInterval &&*/ ammo > 0)
 	{
 		Fire();
 		fireTimer = 0.f;
@@ -154,4 +158,17 @@ void Player::OnDie()
 
 	isAlive = false;
 	SetActive(false);
+}
+
+void Player::OnItem(Item* item)
+{
+	switch (item->GetType())
+	{
+	case Item::Types::Ammo:
+		ammo += item->GetValue();
+		break;
+	case Item::Types::Health:
+		hp += item->GetValue();
+		break;
+	}
 }

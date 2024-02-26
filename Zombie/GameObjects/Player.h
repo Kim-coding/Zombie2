@@ -3,6 +3,7 @@
 
 class SceneGame;
 class Zombie;
+class Item;
 
 class Player : public SpriteGo
 {
@@ -18,8 +19,11 @@ protected:
 	float bulletSpeed = 1000.f;
 	int bulletDamage = 30;
 	
-	int maxHp = 100;
+	int maxHp = 1000;
 	int hp;
+	int maxAmmo = 20;
+	int ammo = maxAmmo;
+
 	bool isAlive = true;
 	bool isNoDamage = false;
 	float noDamageTime = 0.5f;
@@ -41,5 +45,6 @@ public:
 
 	void OnDamage(int damage);
 	void OnDie();
+	void OnItem(Item* item);
 };
 

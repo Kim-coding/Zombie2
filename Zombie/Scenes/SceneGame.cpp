@@ -4,6 +4,7 @@
 #include "TileMap.h"
 #include "Zombie.h"
 #include "ZombieSpawner.h"
+#include "ItemSpawner.h"
 #include "GameObject.h"
 
 SceneGame::SceneGame(SceneIds id)
@@ -28,13 +29,20 @@ sf::Vector2f SceneGame::ClampByTileMap(const sf::Vector2f& point)
 
 void SceneGame::Init()
 {
-	spawners.push_back(new ZombieSpawner());        //좀비 스폰너 2개
+	spawners.push_back(new ZombieSpawner());        //ZombieSpawner
 	spawners.push_back(new ZombieSpawner());
-	
+	itemspawners.push_back(new ItemSpawner());      //ItemSpawner
+
 	for (auto s : spawners)
 	{
 		s->SetPosition(Utils::RandomOnUnitCircle() * 250.f);
 		AddGo(s);
+	}
+
+	for (auto i : itemspawners)                    //ItemSpawner
+	{
+		i->SetPosition(Utils::RandomOnUnitCircle() * 100.f);
+		AddGo(i);
 	}
 
 	player = new Player("Player");

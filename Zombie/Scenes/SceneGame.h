@@ -4,6 +4,7 @@
 class Player;
 class Zombie;
 class ZombieSpawner;
+class ItemSpawner;
 class TileMap;
 class SpriteGo;
 
@@ -17,6 +18,8 @@ protected:
 	SpriteGo* mospoint;
 
 	std::vector< ZombieSpawner*> spawners;
+	std::vector< ItemSpawner*> itemspawners;
+
 	std::list<GameObject*> zombieList;         //좀비를 저장해주기 위함
 
 public:
