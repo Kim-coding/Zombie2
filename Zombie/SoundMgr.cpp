@@ -35,30 +35,73 @@ void SoundMgr::Release()
 
 void SoundMgr::Update(float dt)
 {
-	std::vector<sf::Sound*> toMove;
-	for (auto sound : playing)
+	//if (InputMgr::GetKeyDown(sf::Keyboard::Num1))      //테스트 코드
+	//{
+	//	//PlayBgm(/*bgm넣는 부분*/);
+	//}
+	
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
 	{
-		if (sound->getStatus() == sf::Sound::Stopped)
+		bgmVolume = 25.f;
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num3))  
+	{
+		bgmVolume = 100.f;
+	}
+
+
+	if (isFading)
+	{
+		bool isEndBack = false;
+		bool isEndfront = false;
+
+		int backBgmIndex = (frontBgmIndex == 1) ? 0 : 1;
+
+		float backVolume = bgm[backBgmIndex].getVolume();
+		backVolume = Utils::Lerp(backVolume, 0.f, dt * fadeSpeed);
+		bgm[backBgmIndex].setVolume(backVolume);
+		if (abs(backVolume) < fadeLimit)
 		{
-			toMove.push_back(sound);
+			bgm[backBgmIndex].setVolume(0.f);
+			bgm[backBgmIndex].stop();
+			isEndBack = true;
+		}
+
+		float frontVolume = bgm[frontBgmIndex].getVolume();
+		frontVolume = Utils::Lerp(backVolume, bgmVolume, dt * fadeSpeed);
+		bgm[frontBgmIndex].setVolume(backVolume);
+		if (abs(backVolume - frontVolume) < fadeLimit)
+		{
+			bgm[frontBgmIndex].setVolume(backVolume);
+			isEndfront = true;
+		}
+
+		if (isEndBack && isEndfront)
+		{
+			isFading = false;
 		}
 	}
-	for (auto sound : toMove)
-	{
-		waiting.push_back(sound);
-		playing.remove(sound);
-	}
+
 }
 
 
-void SoundMgr::PlayBgm(std::string id, bool crossFade)//crossFade부분을 구현
+void SoundMgr::PlayBgm(std::string id, bool crossFade) //crossFade부분을 구현부분
 {
+	isFading = true;
+	frontBgmIndex = (frontBgmIndex + 1) % 2; //0 1 0 1 0 1반전되서 나옴
 
+	int backBgmIndex = (frontBgmIndex == 1) ? 0 : 1;
+
+	FadeTimder = 0.f;
+	bgm[frontBgmIndex].setBuffer(RES_MGR_SOUND_BUFFER.Get(id));
+	bgm[frontBgmIndex].setVolume(0);
+	bgm[frontBgmIndex].setLoop(0);
+	bgm[frontBgmIndex].play();
 }
 
 void SoundMgr::StopBgm()
 {
-	
+	/////////////////////////////////
 }
 
 void SoundMgr::PlaySfx(std::string id, bool loop)

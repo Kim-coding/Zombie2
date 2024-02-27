@@ -15,9 +15,9 @@ protected:
 	SceneGame* sceneGame = nullptr;
 	Zombie* zombie;
 
-	float fireInterval = 0.1f;
+	float fireInterval = 0.5f;
 	float bulletSpeed = 1000.f;
-	int bulletDamage = 30;
+	int bulletDamage = 50;
 	
 	int maxHp = 1000;
 	int hp;

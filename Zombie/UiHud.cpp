@@ -119,6 +119,33 @@ void UiHud::Update(float dt)
 
 }
 
+void UiHud::AddScore(int score)
+{
+	this->score += score;
+	SetScore(this->score);
+}
+
+void UiHud::AddHiScore()
+{
+	if (hiscore < score)
+	{
+		hiscore += 10;
+		SetHiScore(hiscore);
+	}
+}
+
+void UiHud::NextWave()
+{
+	wave += 1;
+	SetWave(wave);
+}
+
+void UiHud::AddZombies()    //함수명 잘못 만들었다.
+{
+	zombies -= 1;
+	SetZombieCount(zombies);
+}
+
 void UiHud::Reset()
 {
 	GameObject::Reset();

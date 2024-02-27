@@ -42,38 +42,32 @@ void Spawner::Update(float dt)
 	GameObject::Update(dt);
 
 	timer += dt;
-	zombieCount = sceneGame->GetHud()->GetZombies();
-	if (zombieCount == 0)
-	{
-		WaveTimer += dt;
-		if (WaveTimer > 5)
-		{
-			WaveTimer = 0.f;
-			maxSpawn *= 2;
-			Count = 0;
-		}
-
-	}
-
-	if (timer > interval && Count < maxSpawn )
+	if (timer > interval)
 	{
 		timer = 0.f;
-
-		for (int i = 0; i < spawnCount; ++i)
-		{
-			sf::Vector2f pos = position + Utils::RandomInUnitCircle() * radius;
-			if (sceneGame != nullptr)
-			{
-				pos = sceneGame->ClampByTileMap(pos);
-			}
-			GameObject* newGo = Create();
-			newGo->Init();
-			newGo->Reset();
-			newGo->SetPosition(pos);
-
-			SCENE_MGR.GetCurrentScene()->AddGo(newGo);
-		}
-		++Count;
+		Spaw(spawnCount);
 	}
+}
 
+void Spawner::Spaw()
+{
+	sf::Vector2f pos = position + Utils::RandomInUnitCircle() * radius;
+	if (sceneGame != nullptr)
+	{
+		pos = sceneGame->ClampByTileMap(pos);
+	}
+	GameObject* newGo = Create();
+	newGo->Init();
+	newGo->Reset();
+	newGo->SetPosition(pos);
+
+	SCENE_MGR.GetCurrentScene()->AddGo(newGo);
+}
+
+void Spawner::Spaw(int count)
+{
+	for (int i = 0; i < count; ++i)
+	{
+		Spaw();
+	}
 }

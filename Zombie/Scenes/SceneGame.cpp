@@ -31,7 +31,6 @@ sf::Vector2f SceneGame::ClampByTileMap(const sf::Vector2f& point)
 void SceneGame::Init()
 {
 	spawners.push_back(new ZombieSpawner());        //ZombieSpawner
-	spawners.push_back(new ZombieSpawner());
 	itemspawners.push_back(new ItemSpawner());      //ItemSpawner
 
 	for (auto s : spawners)
@@ -68,6 +67,21 @@ void SceneGame::Init()
 	Scene::Init();
 }
 
+void SceneGame::SetStatus(Status newStatus)
+{
+	currentStatus = newStatus;
+	switch (currentStatus)
+	{
+	case SceneGame::Status::Playing:
+		FRAMEWORK.SetTimeScale(1.f);
+		break;
+	case SceneGame::Status::NextWave:
+		FRAMEWORK.SetTimeScale(0.f);
+		break;
+	}
+}
+
+
 void SceneGame::Release()
 {
 	Scene::Release();
@@ -98,8 +112,14 @@ void SceneGame::Enter()
 	uihud->SetScore(0);
 	uihud->SetHiScore(0);
 	uihud->SetAmmo(uihud->GetAmmo(), uihud->GetTotalAmmo());
-	uihud->SetWave(1);
-	uihud->SetZombieCount(20);
+	uihud->SetWave(0);
+	uihud->SetZombieCount(0);
+
+	SetStatus(Status::Playing);
+	spawners[0]->SetActive(false);
+	spawners[0]->Spaw(5);
+	wave = 1;
+	uihud->SetWave(wave);
 }
 
 void SceneGame::Exit()
@@ -114,9 +134,33 @@ void SceneGame::Update(float dt)
 
   	Scene::Update(dt);
 
-	worldView.setCenter(player->GetPosition());
-	
 	crosshair->SetPosition(ScreenToUi((sf::Vector2i)InputMgr::GetMousePos()));
+
+	sf::Vector2f worldViewCenter = worldView.getCenter();
+	worldViewCenter = Utils::Lerp(worldViewCenter, player->GetPosition(), dt * 2.f);
+	//Lerp() : 시작 지점(화면의 중앙) -> 타겟 지점(플레이어의 포지션) 이동
+
+	worldView.setCenter(worldViewCenter);       //카메라가 플레이어를 쫒아다님 할당X
+
+	switch (currentStatus)
+	{
+	case SceneGame::Status::Playing:
+		if (zombieList.size() == 0)
+		{
+			SetStatus(Status::NextWave);
+		}
+		break;
+	case SceneGame::Status::NextWave:
+		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+		{
+			SetStatus(Status::Playing);
+			uihud->SetWave(++wave);
+			spawners[0]->Spaw(5 * wave);
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)

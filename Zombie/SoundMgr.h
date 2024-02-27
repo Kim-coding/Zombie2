@@ -11,10 +11,13 @@ private:
 	sf::Sound bgm[2];
 	int frontBgmIndex = 0;  //PlayBgm호출 시 갱신
 
-	bool isFading = false;
-	float fadeDuration = 1.f;  //두 사운드 교차하는 시간
-	float fadeTimer = 0.f;     //PlayBgm시 부터 시간을 측정 소리1 줄이고 소리2 늘림
-	
+	bool isFading = false; 
+	float FadeDuration = 3.f;       //두 사운드 교차하는 시간
+	float FadeTimder = 0.f;         //PlayBgm시 부터 시간을 측정 소리1 줄이고 소리2 늘림
+
+	float fadeSpeed = 1.f;           //임계값
+	float fadeLimit = 0.05f;
+
 	std::list<sf::Sound*> playing;
 	std::list<sf::Sound*> waiting;
 

@@ -52,37 +52,18 @@ public:
 	void SetZombieCount(int count);
 
 	
-	/////////////////추가부분////////////////////////
-	void AddScore(int score)
-	{
-		this->score += score;
-		SetScore(this->score);
-	}
-	void AddHiScore()
-	{	
-		if (hiscore < score)
-		{
-			hiscore += 10;
-			SetHiScore(hiscore);
-		}
-	}
-	void NextWave()        //모든 좀비가 다 죽으면 웨이브 1 증가
-	{
-		wave += 1;
-		SetWave(wave);
-	}
-	void AddZombies()
-	{
-		zombies -= 1;
-		SetZombieCount(zombies);
-	}
+	/////////////////////////////////////////
+	void AddScore(int score);
+	void AddHiScore();
+	void NextWave();        //모든 좀비가 다 죽으면 웨이브 1 증가
+	void AddZombies();
+
 	void SetZombies(int zombies){SetZombieCount(zombies);}
 	int GetZombies() { return zombies; }
 	int GetAmmo() {return ammo;}
 	int GetTotalAmmo() {return magazine;}
 	
-	/////////////////////////////////////////////////
-	
+	/////////////////////////////////////////	
 
 	virtual void Init() override;
 	virtual void Release() override;
